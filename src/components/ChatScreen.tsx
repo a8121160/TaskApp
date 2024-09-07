@@ -1,30 +1,35 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, FlatList, KeyboardAvoidingView, Platform } from 'react-native';
 import React, { useState } from 'react';
-import { sendMessageToChatGPT } from '../utils/sendMessageToChatGPT.js';
-
+import { sendMessageToChatGPT } from '../utils/sendMessageToChatGPT';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-const ChatScreen: React.FC = () => {
+const ChatScreen = (): JSX.Element => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState<string>('');
 
   const handleSend = async () => {
+    if (!inputText) return;
+
     const userMessage: Message = { role: 'user', content: inputText };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     const botMessageContent = await sendMessageToChatGPT(inputText);
     const botMessage: Message = { role: 'assistant', content: botMessageContent };
-    setMessages((prevMessages) => [...prevMessages, userMessage, botMessage]);
+    setMessages((prevMessages) => [...prevMessages, botMessage]);
     setInputText('');
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0} // iOSの場合は適切なオフセットを設定
+    >
       <FlatList
         data={messages}
         renderItem={({ item }) => (
@@ -34,14 +39,16 @@ const ChatScreen: React.FC = () => {
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-      <TextInput
-        value={inputText}
-        onChangeText={setInputText}
-        placeholder="Type a message"
-        style={styles.input}
-      />
-      <Button title="Send" onPress={handleSend} />
-    </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Type a message"
+          style={styles.input}
+        />
+        <Button title="Send" onPress={handleSend} />
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -51,11 +58,21 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderTopWidth: 1,
+    borderTopColor: '#ccc',
+    padding: 10,
+    paddingBottom: 30
+  },
   input: {
+    flex: 1,
     borderColor: 'gray',
     borderWidth: 1,
     padding: 10,
-    marginBottom: 10,
+    marginRight: 10,
+    borderRadius: 5,
   },
   userMessage: {
     alignSelf: 'flex-end',
@@ -73,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatScreen
+export default ChatScreen;
