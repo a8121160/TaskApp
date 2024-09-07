@@ -1,8 +1,7 @@
-// App.tsx
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, FlatList } from 'react-native';
 import React, { useState } from 'react';
-import { sendMessageToChatGPT } from '../../utils/sendMessageToChatGPT.js';
+import { sendMessageToChatGPT } from '../utils/sendMessageToChatGPT.js';
 
 
 interface Message {
@@ -74,11 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function App() {
-  return (
-    <View style={{ flex: 1 }}>
-      <ChatScreen />
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+export default ChatScreen
