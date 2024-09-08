@@ -1,7 +1,7 @@
 import axios from 'axios';
-import Constants from 'expo-constants';
 
-const OPENAI_API_KEY = Constants.manifest?.extra?.openaiApiKey;
+
+const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
 interface ChatMessage {
     role: 'user' | 'assistant';
@@ -9,6 +9,10 @@ interface ChatMessage {
 }
 
 export const sendMessageToChatGPT = async (message: string): Promise<string> => {
+    if (!OPENAI_API_KEY) {
+        console.error('API Key is missing');
+        return 'Error: API key is missing';
+    }
     try {
         const response = await axios.post(
             'https://api.openai.com/v1/chat/completions',
@@ -21,6 +25,7 @@ export const sendMessageToChatGPT = async (message: string): Promise<string> => 
                     Authorization: `Bearer ${OPENAI_API_KEY}`,
                     'Content-Type': 'application/json',
                 },
+                method: 'POST',
             }
         );
         return response.data.choices[0].message.content;

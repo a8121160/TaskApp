@@ -1,2 +1,2 @@
-declare module "*.ttf"
-declare module "*.json"
+// declare module "*.ttf"
+// declare module "*.json"

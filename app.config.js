@@ -27,7 +27,7 @@ export default {
       favicon: "./assets/favicon.png"
     },
     extra: {
-      openaiApiKey: process.env.OPENAI_API_KEY
+      openaiApiKey: process.env.REACT_APP_OPENAI_API_KEY
     },
     plugins: [
       "expo-router"

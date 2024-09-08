@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     footerLink: {
         fontSize: 14,
         lineHeight: 24,
-        color: "#467fD3"
+        color: "#46d353"
     }
 
 })
