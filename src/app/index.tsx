@@ -5,16 +5,17 @@ import { useEffect } from 'react'
 import { auth } from '../config'
 
 const Index = (): JSX.Element => {
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user !== null) {
-                router.replace('/task/home')
-            }
-        })
-    }, [])
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, (user) => {
+    //         if (user !== null) {
+    //             router.replace('/task/home')
+    //         }
+    //     })
+    // }, [])
 
-    return <Redirect href='task/home' />
-    // return <Redirect href='auth/log_in' />
+    return <Redirect href='auth/log_in' />
 }
 
 export default Index
+
+// return <Redirect href='task/home' />

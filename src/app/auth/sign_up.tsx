@@ -13,7 +13,7 @@ const handlePress = (email: string, password: string): void => {
         //then 成功　catch失敗
         .then((userCredential) => {
             console.log(userCredential.user.uid)
-            router.replace("/memo/list")
+            router.replace("/task/home")
         })
         //errorというオブジェクトはどこで定義されてる？
         .catch((error) => {
