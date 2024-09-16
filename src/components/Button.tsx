@@ -16,7 +16,7 @@ const Button = (props: Props): JSX.Element => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#46d353',
+        backgroundColor: '#1625AA',
         borderRadius: 4,
         alignSelf: 'flex-start',
         marginBottom: 24

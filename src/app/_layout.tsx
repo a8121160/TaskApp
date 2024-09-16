@@ -3,7 +3,7 @@ import { Stack } from "expo-router"
 const Layout = (): JSX.Element => {
     return <Stack screenOptions={{
         headerStyle: {
-            backgroundColor: "#46d353",
+            backgroundColor: "#1625AA",
         },
         headerTintColor: "#ffffff",
         headerTitle: "Task App",
