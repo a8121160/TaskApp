@@ -12,7 +12,9 @@ export const IncompleteTodos = (props: Props) => {
 
     return (
         <View style={styles.incompleteArea}>
-            <Text style={styles.title}>未完了のTODO</Text>
+            <View style={styles.titleLabel}>
+                <Text style={styles.title}>継続すること</Text>
+            </View>
             <FlatList
                 data={Todos}
                 renderItem={({ item, index }) => (
@@ -40,19 +42,23 @@ export const IncompleteTodos = (props: Props) => {
 
 const styles = StyleSheet.create({
     incompleteArea: {
-        borderWidth: 2,
-        borderColor: '#aacfd0',
-        width: 400,
-        minHeight: 200,
-        padding: 8,
-        margin: 8,
-        borderRadius: 8,
+        // flexShrink: 1,
+        // borderWidth: 1,
+        // borderStyle: 'solid',
+        // borderColor: 'rgba(217, 217, 217, 0.501960813999176)',
     },
     title: {
+        fontSize: 15,
         textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginBottom: 8,
+        color: '#1625AA',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
+        // letterSpacing: -0.15,
+    },
+    titleLabel: {
+
+        borderBottomWidth: 1,
+        borderColor: "rgba(0,0,0,0.15)"
     },
     listRow: {
         flexDirection: 'row',

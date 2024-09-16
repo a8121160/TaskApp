@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { IncompleteTodos } from "../../components/IncompleteTodos";
 import { InputTodo } from "../../components/InputTodo";
 import { CompleteTodos } from "../../components/CompleteTodos";
+import { CalendarList } from "react-native-calendars";
 
 type TodoProps = {};
 
@@ -46,6 +47,14 @@ export const Todo: React.FC<TodoProps> = () => {
 
     return (
         <View style={styles.container}>
+            {/* <CalendarList
+                horizontal
+                pastScrollRange={1}
+                futureScrollRange={1}
+                scrollEnabled
+                showScrollIndicator
+                style={styles.calendar}
+            /> */}
             <InputTodo
                 todoText={todoText}
                 onChange={onChangeTodoText}
@@ -70,6 +79,10 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         backgroundColor: "#f0f0f0",
+    },
+    calendar: {
+        borderBottomWidth: 1,
+        borderBottomColor: "#ddd",
     },
     warningText: {
         color: "red",

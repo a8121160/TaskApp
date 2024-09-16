@@ -11,7 +11,7 @@ export const CompleteTodos = (props: Props) => {
 
     return (
         <View style={styles.completeArea}>
-            <Text style={styles.title}>継続すること</Text>
+            <Text style={styles.title}>完了</Text>
             <FlatList
                 data={Todos}
                 renderItem={({ item, index }) => (
@@ -43,18 +43,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#c9dede',
     },
     title: {
-        width: 90,
-        height: 20.37,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        flexShrink: 0,
-        color: 'rgba(0, 0, 0, 1)',
         textAlign: 'center',
-        fontFamily: 'Noto Sans JP',
-        fontSize: 15,
-        fontStyle: 'normal',
-        fontWeight: '400',
-        letterSpacing: -0.15,
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginBottom: 8,
     },
     listRow: {
         flexDirection: 'row',
