@@ -23,7 +23,7 @@ const handlePress = async (aimId: string, time: Date) => {
         await updateDoc(ref, { time: timeString });
 
         // 次の画面に遷移
-        router.push({ pathname: "/task/FreqDay", params: { aimId } });
+        router.push({ pathname: "/task/freqDay", params: { aimId } });
     } catch (error) {
         console.log("Error updating document: ", error);
         Alert.alert("エラー", "データの保存に失敗しました。");
