@@ -1,24 +1,52 @@
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { Todo } from "./todo"
 import { TouchableOpacity } from "react-native-gesture-handler"
-import { AntDesign } from "@expo/vector-icons"
+import { AntDesign, MaterialIcons } from "@expo/vector-icons"
 import { router } from "expo-router"
 
 const handlePress = (): void => {
     router.push("/task/aimName")
 }
 
+const handlePress2 = (): void => {
+    router.push("/task/chat")
+}
 
 const home = () => {
     return (
-        <View style={{ flex: 1 }}>
+        <View style={styles.container} >
             <Todo />
             {/* <StatusBar style="auto" /> */}
-            <TouchableOpacity onPress={() => { handlePress() }}>
-                <AntDesign name="pluscircle" size={32} color="#B0B0B0" />
-            </TouchableOpacity>
+            <View style={styles.footer}>
+                <TouchableOpacity onPress={() => { handlePress() }}>
+                    <AntDesign name="pluscircle" size={37} color="#1625AA" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { handlePress2() }}>
+                    <MaterialIcons name="contact-support" size={50} color="#1625AA" />
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
 export default home
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        // justifyContent: 'center',
+        // alignItems: 'center',
+    },
+    footer: {
+        borderTopWidth: 1,
+        borderColor: "rgba(0,0,0,0.15)",
+        bottom: 0,
+        position: 'absolute',
+        width: '100%',
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 13,
+    },
+
+})
