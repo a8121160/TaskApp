@@ -3,22 +3,25 @@ import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-n
 import NextButton from '../../components/NextButton';
 import { router } from 'expo-router';
 import { auth, db } from '../../config';
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 
-const handlePress = (name: string): void => {
-    if (auth.currentUser === null) { return }
-    const ref = collection(db, `users/${auth.currentUser.uid}/aims`)
-    addDoc(ref, {
-        name
-    })
-        .then((docRef) => {
-            console.log("success", docRef.id)
-            router.push({ pathname: "/task/freqTime" })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-}
+const handlePress = async (name: string): Promise<void> => {
+    if (!auth.currentUser) return;
+
+    const ref = collection(db, `users/${auth.currentUser.uid}/aims`);
+    try {
+        const docRef = await addDoc(ref, { name });
+        console.log("Success", docRef.id);
+
+        // ドキュメントIDを次の画面に渡す
+        router.push({
+            pathname: "/task/freqTime",
+            params: { aimId: docRef.id }
+        });
+    } catch (error) {
+        console.log("Error adding document: ", error);
+    }
+};
 
 const aimName = () => {
     const [name, setName] = useState('');
@@ -39,15 +42,13 @@ const aimName = () => {
             </View>
             <NextButton button="次へ" onPress={() => { handlePress(name) }} />
         </KeyboardAvoidingView>
-
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',
-        // justifyContent: 'space-between'
     },
     explanation: {
         backgroundColor: '#ffffff',
@@ -74,7 +75,6 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         backgroundColor: '#f9f9f9',
     },
-
 });
 
-export default aimName
+export default aimName;

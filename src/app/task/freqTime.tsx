@@ -1,32 +1,66 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import NextButton from '../../components/NextButton';
 import { auth, db } from '../../config';
-import { Timestamp, addDoc, collection } from 'firebase/firestore';
-import { router } from 'expo-router';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { router, useLocalSearchParams } from 'expo-router';
 
-const handlePress = (time: Date): void => {
-    if (auth.currentUser === null) { return }
-    const ref = collection(db, `users/${auth.currentUser.uid}/aims`)
-    addDoc(ref, {
-        time,
-        updatedAt: Timestamp.fromDate(new Date())
-    })
-        .then((docRef) => {
-            console.log("success", docRef.id)
-            router.push({ pathname: "/task/freqDay" })
-        })
-        .catch((error) => {
-            console.log(error)
-        })
-}
+const formatTime = (date: Date) => {
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+};
+
+const handlePress = async (aimId: string, time: Date) => {
+    try {
+        if (auth.currentUser === null) { return }
+
+        const timeString = formatTime(time);
+        const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
+
+        // Firestore に `time` を保存
+        await updateDoc(ref, { time: timeString });
+
+        // 次の画面に遷移
+        router.push({ pathname: "/task/FreqDay", params: { aimId } });
+    } catch (error) {
+        console.log("Error updating document: ", error);
+        Alert.alert("エラー", "データの保存に失敗しました。");
+    }
+};
 
 const freqTime = () => {
+    const { aimId } = useLocalSearchParams(); // aimId を取得
     const [time, setTime] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
 
-    const onChange = (event: any, selectedDate: any) => {
+    useEffect(() => {
+        if (auth.currentUser === null || !aimId) { return }
+
+        const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
+
+        getDoc(ref)
+            .then((docSnap) => {
+                if (docSnap.exists()) {
+                    const remoteTime = docSnap.data()?.time;
+                    if (remoteTime) {
+                        const [hours, minutes] = remoteTime.split(':').map(Number);
+                        const newDate = new Date();
+                        newDate.setHours(hours);
+                        newDate.setMinutes(minutes);
+                        setTime(newDate);
+                    }
+                } else {
+                    console.log("Document does not exist!");
+                }
+            })
+            .catch((error) => {
+                console.log("Error fetching document: ", error);
+            });
+    }, [aimId]);
+
+    const onChange = (event: any, selectedDate: Date | undefined) => {
         const currentDate = selectedDate || time;
         setShowPicker(false);
         setTime(currentDate);
@@ -34,12 +68,6 @@ const freqTime = () => {
 
     const showTimepicker = () => {
         setShowPicker(true);
-    };
-
-    const formatTime = (date: Date) => {
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-        return `${hours}:${minutes}`;
     };
 
     return (
@@ -62,24 +90,21 @@ const freqTime = () => {
                     display="spinner"
                     onChange={onChange}
                 />
-            )
-            }
-            <NextButton button="次へ" onPress={() => { handlePress(time) }} />
+            )}
+            <NextButton button="次へ" onPress={() => { handlePress(String(aimId), time) }} />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f5f5f5',
-        //追加
-        alignItems: 'center',
+        alignItems: 'center'
     },
     explanation: {
         backgroundColor: '#ffffff',
         paddingVertical: 40,
-        //追加
         paddingHorizontal: 30,
         alignItems: 'center',
     },
@@ -87,11 +112,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 16,
         color: '#666',
-    },
-    mainContent: {
-        paddingVertical: 40,
-        paddingHorizontal: 30,
-        borderRadius: 10,
+        textAlign: 'center',
     },
     timeContainer: {
         backgroundColor: '#EDEDED',
@@ -108,4 +129,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default freqTime
+export default freqTime;
