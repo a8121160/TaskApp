@@ -10,7 +10,7 @@ const NextButton = (props: Props) => {
     const { button, onPress } = props
     return (
         <View>
-            <TouchableOpacity onPress={onPress}>
+            <TouchableOpacity style={styles.button} onPress={onPress}>
                 <Text style={styles.buttonText} >{button}</Text>
             </TouchableOpacity>
         </View>

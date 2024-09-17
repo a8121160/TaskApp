@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import NextButton from '../../components/NextButton';
 import { router } from 'expo-router';
 import { auth, db } from '../../config';
 import { Timestamp, addDoc, collection } from 'firebase/firestore';
 
-const handlePress = (inputValue: string): void => {
+const handlePress = (name: string): void => {
     if (auth.currentUser === null) { return }
     const ref = collection(db, `users/${auth.currentUser.uid}/aims`)
     addDoc(ref, {
-        inputValue,
-        updatedAt: Timestamp.fromDate(new Date())
+        name
     })
         .then((docRef) => {
             console.log("success", docRef.id)
@@ -22,10 +21,10 @@ const handlePress = (inputValue: string): void => {
 }
 
 const aimName = () => {
-    const [inputValue, setInputValue] = useState('');
+    const [name, setName] = useState('');
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView style={styles.container}>
             <View style={styles.explanation}>
                 <Text style={styles.subTitle}>ここで決めたことを継続します。</Text>
             </View>
@@ -34,12 +33,13 @@ const aimName = () => {
                     style={styles.input}
                     placeholder="例：毎日水を飲む"
                     placeholderTextColor="#ccc"
-                    value={inputValue}
-                    onChangeText={setInputValue}
+                    value={name}
+                    onChangeText={setName}
                 />
             </View>
-            <NextButton button="次へ" onPress={() => { handlePress(inputValue) }} />
-        </View>
+            <NextButton button="次へ" onPress={() => { handlePress(name) }} />
+        </KeyboardAvoidingView>
+
     );
 }
 
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         color: '#666',
     },
     mainContent: {
+        paddingVertical: 40,
         paddingHorizontal: 30,
         borderRadius: 10,
     },
