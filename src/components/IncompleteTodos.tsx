@@ -1,41 +1,40 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { TodoItem } from "./CompleteTodos";
+import { RectButton, Swipeable } from "react-native-gesture-handler";
 
 interface Props {
     Todos: TodoItem[];
     onClickComplete: (index: number) => void;
-    onClickDelete: (index: number) => void;
 };
 
 export const IncompleteTodos = (props: Props) => {
-    const { Todos, onClickComplete, onClickDelete } = props;
+    const { Todos, onClickComplete } = props;
+
+    const renderRightActions = (index: number) => (
+        <RectButton
+            style={styles.completeButton}
+            onPress={() => onClickComplete(index)}
+        >
+            <Text style={styles.actionText}>✓</Text>
+        </RectButton>
+    );
 
     return (
         <View style={styles.incompleteArea}>
-            <View style={styles.titleLabel}>
-                <Text style={styles.title}>継続すること</Text>
-            </View>
             <FlatList
                 data={Todos}
                 renderItem={({ item, index }) => (
-                    <View style={styles.listRow}>
-                        <Text>
-                            <Text style={styles.todoItem}>{item.name}</Text>
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => onClickComplete(index)}
-                        >
-                            <Text style={styles.buttonText}>完了</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => onClickDelete(index)}
-                        >
-                            <Text style={styles.buttonText}>削除</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Swipeable
+                        key={index}
+                        renderRightActions={() => renderRightActions(index)}
+                    >
+                        <View style={styles.listRow}>
+                            <Text>
+                                <Text style={styles.todoItem}>{item.name}</Text>
+                            </Text>
+                        </View>
+                    </Swipeable>
                 )}
                 keyExtractor={(item, index) => `${item.name}-${index}`}
             />
@@ -83,4 +82,17 @@ const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
     },
+    completeButton: {
+        backgroundColor: "lightgreen",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 80,
+    },
+    actionText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
 });
+
+

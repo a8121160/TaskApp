@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { RectButton, Swipeable } from "react-native-gesture-handler";
 
 
 export interface TodoItem {
@@ -16,25 +17,29 @@ interface Props {
 export const CompleteTodos = (props: Props) => {
     const { Todos, onClickBack } = props;
 
+    const renderLeftActions = (index: number) => (
+        <RectButton
+            style={styles.deleteButton}
+            onPress={() => onClickBack(index)}
+        >
+            <Text style={styles.actionText}>✗</Text>
+        </RectButton>
+    )
     return (
         <View style={styles.completeArea}>
-            <View style={styles.titleLabel}>
-                <Text style={styles.title}>完了</Text>
-            </View>
             <FlatList
                 data={Todos}
                 renderItem={({ item, index }) => (
-                    <View style={styles.listRow}>
-                        <Text>
-                            <Text style={styles.todoItem}>{item.name}</Text> {/* item.nameを表示 */}
-                        </Text>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={() => onClickBack(index)}
-                        >
-                            <Text style={styles.buttonText}>戻す</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <Swipeable
+                        key={index}
+                        renderLeftActions={() => renderLeftActions(index)}
+                    >
+                        <View style={styles.listRow}>
+                            <Text>
+                                <Text style={styles.todoItem}>{item.name}</Text> {/* item.nameを表示 */}
+                            </Text>
+                        </View>
+                    </Swipeable>
                 )}
                 keyExtractor={(item, index) => `${item.name}-${index}`}
             />
@@ -73,5 +78,16 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#fff',
         textAlign: 'center',
+    },
+    deleteButton: {
+        backgroundColor: "red",
+        justifyContent: "center",
+        alignItems: "center",
+        width: 80,
+    },
+    actionText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
     },
 });

@@ -1,40 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-
-import { CalendarList } from "react-native-calendars";
-
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "../config";
 import { IncompleteTodos } from "./IncompleteTodos";
 import { CompleteTodos, TodoItem } from "./CompleteTodos";
+import { Swipeable } from "react-native-gesture-handler";  // 追加
+import { RectButton } from "react-native-gesture-handler";  // 追加
 
 const Todo: React.FC = () => {
-    const [todoText, setTodoText] = useState<string>("");
-    const [incompleteTodos, setIncompleteTodos] = useState<TodoItem[]>([]);  // TodoItem型に変更
-    const [completeTodos, setCompleteTodos] = useState<TodoItem[]>([]);      // TodoItem型に変更
+    const [incompleteTodos, setIncompleteTodos] = useState<TodoItem[]>([]);
+    const [completeTodos, setCompleteTodos] = useState<TodoItem[]>([]);
 
-    // Firebase からデータを取得する
     const fetchTodos = async () => {
         if (auth.currentUser === null) {
             console.log("ユーザーが認証されていません");
             return;
         }
-
         try {
-            // aims コレクションを参照
             const ref = collection(db, `users/${auth.currentUser.uid}/aims`);
-
-            // aims コレクション内の全ドキュメントを取得
             const snapshot = await getDocs(ref);
-
-            // 取得したデータを TodoItem[] に変換
             const todos: TodoItem[] = snapshot.docs.map(doc => ({
                 name: doc.data().name || "",
                 day: doc.data().day || [],
                 time: doc.data().time || ""
             }));
-
-            setIncompleteTodos(todos);  // TodoItem[] 型のデータを設定
+            setIncompleteTodos(todos);
         } catch (error) {
             console.error("データの取得に失敗しました: ", error);
         }
@@ -44,11 +34,11 @@ const Todo: React.FC = () => {
         fetchTodos();
     }, []);
 
-    const onClickDelete = (index: number) => {
-        const newTodos = [...incompleteTodos];
-        newTodos.splice(index, 1);
-        setIncompleteTodos(newTodos);
-    };
+    // const onClickDelete = (index: number) => {
+    //     const newTodos = [...incompleteTodos];
+    //     newTodos.splice(index, 1);
+    //     setIncompleteTodos(newTodos);
+    // };
 
     const onClickComplete = (index: number) => {
         const newIncompleteTodos = [...incompleteTodos];
@@ -64,26 +54,15 @@ const Todo: React.FC = () => {
         setIncompleteTodos([...incompleteTodos, backTodo]);
     };
 
-    const isMaxLimitIncompleteTodos = incompleteTodos.length >= 5;
-
     return (
         <View style={styles.container}>
-            {/* <CalendarList
-                horizontal
-                pastScrollRange={1}
-                futureScrollRange={1}
-                scrollEnabled
-                showScrollIndicator
-                style={styles.calendar}
-            /> */}
-            {isMaxLimitIncompleteTodos && (
-                <Text style={styles.warningText}>登録できるTODOは5個までです</Text>
-            )}
-            <IncompleteTodos
-                Todos={incompleteTodos}
-                onClickComplete={onClickComplete}
-                onClickDelete={onClickDelete}
-            />
+            <View style={styles.titleLabel}>
+                <Text style={styles.title}>継続すること</Text>
+            </View>
+            <IncompleteTodos Todos={incompleteTodos} onClickComplete={onClickComplete} />
+            <View style={styles.titleLabel}>
+                <Text style={styles.title}>完了</Text>
+            </View>
             <CompleteTodos Todos={completeTodos} onClickBack={onClickBack} />
         </View>
     );
@@ -95,15 +74,23 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: "#f0f0f0",
     },
-    calendar: {
-        borderBottomWidth: 1,
-        borderBottomColor: "#ddd",
-    },
     warningText: {
         color: "red",
         textAlign: "center",
         marginVertical: 8,
     },
+    title: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: '#1625AA',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
+        // letterSpacing: -0.15,
+    },
+    titleLabel: {
+        borderBottomWidth: 1,
+        borderColor: "rgba(0,0,0,0.15)"
+    },
 });
 
-export default Todo
+export default Todo;

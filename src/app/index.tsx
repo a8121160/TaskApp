@@ -13,9 +13,8 @@ const Index = (): JSX.Element => {
     //     })
     // }, [])
 
-    return <Redirect href='task/home' />
+    return <Redirect href='auth/log_in' />
 }
 
 export default Index
 
-// return <Redirect href='task/home' />
