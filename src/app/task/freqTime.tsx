@@ -15,14 +15,10 @@ const formatTime = (date: Date) => {
 const handlePress = async (aimId: string, time: Date) => {
     try {
         if (auth.currentUser === null) { return }
-
         const timeString = formatTime(time);
         const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
 
-        // Firestore に `time` を保存
         await updateDoc(ref, { time: timeString });
-
-        // 次の画面に遷移
         router.push({ pathname: "/task/freqDay", params: { aimId } });
     } catch (error) {
         console.log("Error updating document: ", error);
@@ -31,13 +27,12 @@ const handlePress = async (aimId: string, time: Date) => {
 };
 
 const freqTime = () => {
-    const { aimId } = useLocalSearchParams(); // aimId を取得
+    const { aimId } = useLocalSearchParams();
     const [time, setTime] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
 
     useEffect(() => {
         if (auth.currentUser === null || !aimId) { return }
-
         const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
 
         getDoc(ref)
@@ -75,7 +70,7 @@ const freqTime = () => {
             <View style={styles.explanation}>
                 <Text style={styles.subTitle}>
                     無理なく行動しやすいタイミングを考えます。
-                    ex) ストレッチ → シャワー直後（22:00）
+                    ex. ストレッチ → シャワー直後（22:00）
                     筋トレ、勉強 → 帰宅直後（20:00）
                 </Text>
             </View>

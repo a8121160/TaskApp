@@ -6,7 +6,7 @@ import NextButton from '../../components/NextButton';
 import { useLocalSearchParams, router } from 'expo-router';
 
 const confirm = () => {
-    const { aimId } = useLocalSearchParams(); // aimId を取得
+    const { aimId } = useLocalSearchParams();
     const [memoData, setMemoData] = useState<any>(null); // Firebaseから取得したデータ
     const [displayDays, setDisplayDays] = useState<string>(''); // 表示用の曜日文字列
     const [displayTime, setDisplayTime] = useState<string>(''); // 表示用の時間文字列
@@ -15,13 +15,13 @@ const confirm = () => {
         const fetchMemoData = async () => {
             if (auth.currentUser === null || !aimId) { return }
             try {
-                const memoRef = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
-                const docSnap = await getDoc(memoRef);
+                const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
+                const docSnap = await getDoc(ref);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     setMemoData(data);
 
-                    // 曜日の表示を整形
+                    // 曜日の表示
                     if (data.day && data.day.length === 7) {
                         setDisplayDays('毎日');
                     } else if (data.day && data.day.length > 0) {
@@ -30,7 +30,7 @@ const confirm = () => {
                         setDisplayDays('なし');
                     }
 
-                    // 時間の表示を整形
+                    // 時間の表示
                     if (data.time) {
                         setDisplayTime(`(${data.time})`);
                     } else {
@@ -64,7 +64,7 @@ const confirm = () => {
                 <Text style={styles.label}>実行時間:</Text>
                 <Text style={styles.value}>{displayTime}</Text>
             </View>
-            <NextButton button="始める" onPress={handleStart} />
+            <NextButton button="始める!" onPress={handleStart} />
         </View>
     );
 };

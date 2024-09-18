@@ -7,13 +7,11 @@ import { addDoc, collection } from 'firebase/firestore';
 
 const handlePress = async (name: string): Promise<void> => {
     if (!auth.currentUser) return;
-
     const ref = collection(db, `users/${auth.currentUser.uid}/aims`);
     try {
         const docRef = await addDoc(ref, { name });
         console.log("Success", docRef.id);
 
-        // ドキュメントIDを次の画面に渡す
         router.push({
             pathname: "/task/freqTime",
             params: { aimId: docRef.id }

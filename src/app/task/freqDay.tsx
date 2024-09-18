@@ -25,8 +25,12 @@ const freqDay = () => {
         try {
             if (!auth.currentUser) return;
             const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
+
             await updateDoc(ref, { day: selectedDays });
-            router.push("/task/confirm");
+
+            router.push({
+                pathname: "/task/confirm", params: { aimId }
+            });
         } catch (error) {
             console.error("Error saving days: ", error);
             Alert.alert("エラー", "曜日の保存に失敗しました。");

@@ -11,7 +11,9 @@ export const CompleteTodos = (props: Props) => {
 
     return (
         <View style={styles.completeArea}>
-            <Text style={styles.title}>完了</Text>
+            <View style={styles.titleLabel}>
+                <Text style={styles.title}>完了</Text>
+            </View>
             <FlatList
                 data={Todos}
                 renderItem={({ item, index }) => (
@@ -33,20 +35,23 @@ export const CompleteTodos = (props: Props) => {
 
 const styles = StyleSheet.create({
     completeArea: {
-        borderWidth: 2,
-        borderColor: '#aacfd0',
-        width: 400,
-        minHeight: 200,
-        padding: 8,
-        margin: 8,
-        borderRadius: 8,
-        backgroundColor: '#c9dede',
+        // borderWidth: 2,
+        // borderColor: '#aacfd0',
+        // width: 400,
+        // minHeight: 200,
+        // padding: 8,
+        // margin: 8,
+        // borderRadius: 8,
+        // backgroundColor: '#c9dede',
     },
     title: {
+        fontSize: 15,
         textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginBottom: 8,
+        color: '#1625AA',
+    },
+    titleLabel: {
+        borderBottomWidth: 1,
+        borderColor: "rgba(0,0,0,0.15)"
     },
     listRow: {
         flexDirection: 'row',
@@ -63,6 +68,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#79a8a9',
         paddingVertical: 4,
         paddingHorizontal: 10,
+        marginHorizontal: 2,
     },
     buttonText: {
         color: '#fff',

@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
         // letterSpacing: -0.15,
     },
     titleLabel: {
-
         borderBottomWidth: 1,
         borderColor: "rgba(0,0,0,0.15)"
     },
