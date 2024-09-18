@@ -1,8 +1,9 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
+import { TodoItem } from "./CompleteTodos";
 
 interface Props {
-    Todos: string[];
+    Todos: TodoItem[];
     onClickComplete: (index: number) => void;
     onClickDelete: (index: number) => void;
 };
@@ -19,7 +20,7 @@ export const IncompleteTodos = (props: Props) => {
                 data={Todos}
                 renderItem={({ item, index }) => (
                     <View style={styles.listRow}>
-                        <Text style={styles.todoItem}>{item}</Text>
+                        <Text style={styles.todoItem}>{item.name}</Text>
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => onClickComplete(index)}
@@ -34,7 +35,7 @@ export const IncompleteTodos = (props: Props) => {
                         </TouchableOpacity>
                     </View>
                 )}
-                keyExtractor={(item) => item}
+                keyExtractor={(item, index) => `${item.name}-${index}`}
             />
         </View>
     );

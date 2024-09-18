@@ -48,7 +48,7 @@ const confirm = () => {
     }, [aimId]);
 
     const handleStart = () => {
-        router.push("/task/home");
+        router.replace("/task/home");
     };
 
     return (

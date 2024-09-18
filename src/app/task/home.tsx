@@ -1,8 +1,8 @@
-import { StyleSheet, View } from "react-native"
-import { Todo } from "./todo"
-import { TouchableOpacity } from "react-native-gesture-handler"
-import { AntDesign, MaterialIcons } from "@expo/vector-icons"
-import { router } from "expo-router"
+import { View, StyleSheet } from 'react-native';
+import Todo from '../../components/Todo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const handlePress = (): void => {
     router.push("/task/aimName")
@@ -12,7 +12,8 @@ const handlePress2 = (): void => {
     router.push("/task/chat")
 }
 
-const home = () => {
+const home: React.FC = () => {
+
     return (
         <View style={styles.container} >
             <Todo />
@@ -29,13 +30,13 @@ const home = () => {
     )
 }
 
-export default home
 
+// スタイルの指定
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'center',
-        // alignItems: 'center',
+        padding: 20,
+        backgroundColor: '#f0f0f0',
     },
     footer: {
         borderTopWidth: 1,
@@ -48,5 +49,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 13,
     },
+});
 
-})
+export default home

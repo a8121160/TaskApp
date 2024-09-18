@@ -1,8 +1,15 @@
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 
+
+export interface TodoItem {
+    name: string;    // 目標名
+    day: string[];   // 繰り返しの日付（複数の曜日を持つ）
+    time: string;    // 実行時間
+}
+
 interface Props {
-    Todos: string[];
+    Todos: TodoItem[];  // string[] を TodoItem[] に変更
     onClickBack: (index: number) => void;
 }
 
@@ -18,7 +25,7 @@ export const CompleteTodos = (props: Props) => {
                 data={Todos}
                 renderItem={({ item, index }) => (
                     <View style={styles.listRow}>
-                        <Text style={styles.todoItem}>{item}</Text>
+                        <Text style={styles.todoItem}>{item.name}</Text> {/* item.nameを表示 */}
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => onClickBack(index)}
@@ -27,23 +34,14 @@ export const CompleteTodos = (props: Props) => {
                         </TouchableOpacity>
                     </View>
                 )}
-                keyExtractor={(item) => item}
+                keyExtractor={(item, index) => `${item.name}-${index}`}
             />
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    completeArea: {
-        // borderWidth: 2,
-        // borderColor: '#aacfd0',
-        // width: 400,
-        // minHeight: 200,
-        // padding: 8,
-        // margin: 8,
-        // borderRadius: 8,
-        // backgroundColor: '#c9dede',
-    },
+    completeArea: {},
     title: {
         fontSize: 15,
         textAlign: 'center',
