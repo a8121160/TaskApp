@@ -25,7 +25,9 @@ export const CompleteTodos = (props: Props) => {
                 data={Todos}
                 renderItem={({ item, index }) => (
                     <View style={styles.listRow}>
-                        <Text style={styles.todoItem}>{item.name}</Text> {/* item.nameを表示 */}
+                        <Text>
+                            <Text style={styles.todoItem}>{item.name}</Text> {/* item.nameを表示 */}
+                        </Text>
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => onClickBack(index)}

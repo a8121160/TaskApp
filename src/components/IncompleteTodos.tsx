@@ -20,7 +20,9 @@ export const IncompleteTodos = (props: Props) => {
                 data={Todos}
                 renderItem={({ item, index }) => (
                     <View style={styles.listRow}>
-                        <Text style={styles.todoItem}>{item.name}</Text>
+                        <Text>
+                            <Text style={styles.todoItem}>{item.name}</Text>
+                        </Text>
                         <TouchableOpacity
                             style={styles.button}
                             onPress={() => onClickComplete(index)}

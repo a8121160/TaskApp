@@ -13,7 +13,6 @@ const handlePress2 = (): void => {
 }
 
 const home: React.FC = () => {
-
     return (
         <View style={styles.container} >
             <Todo />
