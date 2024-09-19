@@ -13,8 +13,8 @@ const formatTime = (date: Date) => {
 };
 
 const handlePress = async (aimId: string, time: Date) => {
+    if (auth.currentUser === null) { return }
     try {
-        if (auth.currentUser === null) { return }
         const timeString = formatTime(time);
         const ref = doc(db, `users/${auth.currentUser.uid}/aims/${aimId}`);
 

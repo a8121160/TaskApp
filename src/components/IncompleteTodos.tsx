@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from "react-native";
 import { TodoItem } from "./CompleteTodos";
 import { RectButton, Swipeable } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
     Todos: TodoItem[];
@@ -10,6 +11,7 @@ interface Props {
 
 export const IncompleteTodos = (props: Props) => {
     const { Todos, onClickComplete } = props;
+    const navigation = useNavigation();
 
     const renderRightActions = (index: number) => (
         <RectButton
@@ -19,6 +21,11 @@ export const IncompleteTodos = (props: Props) => {
             <Text style={styles.actionText}>✓</Text>
         </RectButton>
     );
+
+    // const handlePress = (name: string) => {
+    //     navigation.navigate("detail", { name });
+    // };
+
 
     return (
         <View style={styles.incompleteArea}>
@@ -30,9 +37,11 @@ export const IncompleteTodos = (props: Props) => {
                         renderRightActions={() => renderRightActions(index)}
                     >
                         <View style={styles.listRow}>
-                            <Text>
-                                <Text style={styles.todoItem}>{item.name}</Text>
-                            </Text>
+                            <TouchableOpacity >
+                                <Text>
+                                    <Text style={styles.todoItem}>{item.name}</Text>
+                                </Text>
+                            </TouchableOpacity>
                         </View>
                     </Swipeable>
                 )}

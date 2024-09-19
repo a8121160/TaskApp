@@ -28,7 +28,7 @@ const freqDay = () => {
 
             await updateDoc(ref, { day: selectedDays });
 
-            router.replace({
+            router.push({
                 pathname: "/task/confirm", params: { aimId }
             });
         } catch (error) {
